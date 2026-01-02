@@ -14,9 +14,19 @@ export function activate(context: vscode.ExtensionContext) {
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
 	const disposable = vscode.commands.registerCommand('localforge.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the us
-		vscode.window.showInformationMessage('LocalForge is working!');
+		const editor = vscode.window.activeTextEditor;
+
+		if (!editor){
+			vscode.window.showInformationMessage('No active text editor');
+			return;
+		}
+		const selection = editor.selection;
+		const selectedText = editor.document.getText(selection);
+		if (!selectedText) {
+			vscode.window.showInformationMessage('No selected text');
+			return;
+		}
+		vscode.window.showInformationMessage(`Selected text length: ${selectedText.length} characters`);
 	});
 
 	context.subscriptions.push(disposable);
