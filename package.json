@@ -15,7 +15,7 @@
     "commands": [
       {
         "command": "localforge.helloWorld",
-        "title": "Hello World"
+        "title": "LocalForge: Test Command"
       }
     ]
   },
