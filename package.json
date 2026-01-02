@@ -14,8 +14,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "localforge.helloWorld",
-        "title": "LocalForge: Test Command"
+        "command": "localforge.explainSelection",
+        "title": "LocalForge: Explain Selection"
       }
     ]
   },

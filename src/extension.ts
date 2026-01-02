@@ -1,21 +1,17 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+let outputChannel: vscode.OutputChannel;  //Kept this at module level so activate can access it and it has to run many times.
+
 export function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "localforge" is now active!');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('localforge.helloWorld', () => {
+	console.log('LocalForge is now active!');
+
+	outputChannel = vscode.window.createOutputChannel('LocalForge');  //Runs once for creating output channel.
+
+	const disposable = vscode.commands.registerCommand('localforge.explainSelection', () => {
 		const editor = vscode.window.activeTextEditor;
-
+		
 		if (!editor){
 			vscode.window.showInformationMessage('No active text editor');
 			return;
@@ -26,11 +22,23 @@ export function activate(context: vscode.ExtensionContext) {
 			vscode.window.showInformationMessage('No selected text');
 			return;
 		}
-		vscode.window.showInformationMessage(`Selected text length: ${selectedText.length} characters`);
-	});
+		
+		outputChannel.clear();
+
+		outputChannel.appendLine('=====LocalForge=====');
+		outputChannel.appendLine('');
+		outputChannel.appendLine(`Selected text length: ${selectedText.length} characters`);
+		outputChannel.appendLine('');
+		outputChannel.appendLine('Selected text preview:');
+		outputChannel.appendLine(selectedText);
+
+		outputChannel.show(); // responisble for showing outputchannel.
+
+	}
+);
 
 	context.subscriptions.push(disposable);
 }
 
-// This method is called when your extension is deactivated
+
 export function deactivate() {}
