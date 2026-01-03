@@ -1,54 +1,37 @@
-export function explainSelection(input: string): string {
-    const originalText = input;
-    const trimmedText = input.trim();
+import { generateWithOllama } from "../ollama/ollamaClient";
+import { fallbackExplain } from "./fallbackExplain";
+import { getDefaultModel } from "../ollama/ollamaModels";
 
-    if (trimmedText.length === 0) {
-        return 'No Code Selected';
-    }
 
-    const characters = originalText.length;
-    const lines = originalText.split('\n').length;
-    
-    let language = 'Unknown';
+export async function explainSelection(
+    input: string,
+    outputChannel: any,
+    abortSignal?: AbortSignal
+): Promise<void>{
 
-    if (trimmedText.includes('=>') || trimmedText.includes(': number')) {
-        language = 'TypeScript';
-    }
-    else if (trimmedText.includes('def')) {
-        language = 'Python';
-    }
-    else if (trimmedText.includes('#include')) {
-        language = 'C/C++';
-    }
-    else if (trimmedText.includes('function')) {
-        language = 'JavaScript';
+    const model = await getDefaultModel();
+
+    if (!model) {
+        outputChannel.appendLine(fallbackExplain(input));
+        return;
     }
 
-    let explanation = 'This appears to be a code snippet.';
-
-    if (trimmedText.includes('=>')) {
-        explanation = 'This code defines an arrow function that performs an operation and returns the result.';
-    }
-    else if (trimmedText.includes(': function')) {
-        explanation = 'This code defines a function that encapsulates reusable logic.';
-    }
-    else if(trimmedText.includes('class')) {
-        explanation = 'This code defines a class, which groups related data and behavior.';
-    }
-
-    let result = '';
-    result += 'LocalForge Explanation\n';
-    result += '========================\n';
-    result += `Language: ${language}\n`;
-    result += `Characters: ${characters}\n`;
-    result += `Lines: ${lines}\n`;
-    result += `\n`;
-    result += `Explanation: ${explanation}\n`;
-    result += '\n\n';
-    result += 'Original Code:\n';
-    result += '```\n';
-    result += originalText;
-    result += '\n```\n';
-    return result;
+    await generateWithOllama(
+        model,
+        input,
+        {
+            onToken: (token: string) => {
+                outputChannel.append(token);
+            },
+            onDone:() => {
+                outputChannel.appendLine('\n\n- LocalForge');
+            },
+            onError: (error: Error) => {
+                outputChannel.appendLine('\n[Ollama error]');
+                outputChannel.appendLine(error.message);
+            }
+        },
+        abortSignal
+    );
 
 }

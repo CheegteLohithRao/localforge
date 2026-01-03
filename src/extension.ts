@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { explainSelection } from './explain/explainSelection';
 
 
-let outputChannel: vscode.OutputChannel;  //Kept this at module level so activate can access it and it has to run many times.
+let outputChannel: vscode.OutputChannel;  //Keep this at module level so activate can access it and it has to run many times.
 let statusBarItem: vscode.StatusBarItem; // i declared the statusbar for handling long computatiobs or loading handling.
 
 
@@ -48,9 +48,8 @@ export function activate(context: vscode.ExtensionContext) {
 					}
 
 					outputChannel.clear();
-					const explanation = explainSelection(selectedText);
-					outputChannel.appendLine(explanation);
 					outputChannel.show();   // responisble for showing outputchannel.
+					await explainSelection(selectedText, outputChannel);
 
 					statusBarItem.text = '$(check) LocalForge: Ready';
 
