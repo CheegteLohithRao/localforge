@@ -15,8 +15,6 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(statusBarItem);
 
 
-	vscode.window.showInformationMessage('LocalForge is now active!');
-
 	outputChannel = vscode.window.createOutputChannel('LocalForge');  //Runs once for creating output channel.
 
 	const disposable = vscode.commands.registerCommand('localforge.explainSelection', 
