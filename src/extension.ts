@@ -1,11 +1,12 @@
 import * as vscode from 'vscode';
+import { explainSelection } from './explain/expalinSelection';
+
 
 let outputChannel: vscode.OutputChannel;  //Kept this at module level so activate can access it and it has to run many times.
 
 export function activate(context: vscode.ExtensionContext) {
 
-
-	console.log('LocalForge is now active!');
+	vscode.window.showInformationMessage('LocalForge is now active!');
 
 	outputChannel = vscode.window.createOutputChannel('LocalForge');  //Runs once for creating output channel.
 
@@ -24,14 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 		
 		outputChannel.clear();
-
-		outputChannel.appendLine('=====LocalForge=====');
-		outputChannel.appendLine('');
-		outputChannel.appendLine(`Selected text length: ${selectedText.length} characters`);
-		outputChannel.appendLine('');
-		outputChannel.appendLine('Selected text preview:');
-		outputChannel.appendLine(selectedText);
-
+		outputChannel.appendLine(explainSelection(selectedText));
 		outputChannel.show(); // responisble for showing outputchannel.
 
 	}

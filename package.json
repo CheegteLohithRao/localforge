@@ -17,7 +17,16 @@
         "command": "localforge.explainSelection",
         "title": "LocalForge: Explain Selection"
       }
-    ]
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "localforge.explainSelection",
+          "when": "editor.hasSelection",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
