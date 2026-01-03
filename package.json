@@ -26,7 +26,14 @@
           "group": "navigation"
         }
       ]
-    }
+    },
+    "keybindings": [
+      {
+        "command": "localforge.explainSelection",
+        "key": "Ctrl+alt+e",
+        "when": "editor.hasSelection"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
