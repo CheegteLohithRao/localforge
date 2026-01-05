@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { explainSelection } from './explain/explainSelection';
+import { getSelectedModel, selectOllamaModel } from './explain/modelSelection';
 
 
 let outputChannel: vscode.OutputChannel;  //Keep this at module level so activate can access it and it has to run many times.
@@ -13,6 +14,12 @@ export function activate(context: vscode.ExtensionContext) {
 	statusBarItem.show();
 
 	context.subscriptions.push(statusBarItem);
+	context.subscriptions.push(
+		vscode.commands.registerCommand(
+			'localforge.selectModel',
+			() => selectOllamaModel(context)
+		)
+	);
 
 
 	outputChannel = vscode.window.createOutputChannel('LocalForge');  //Runs once for creating output channel.
@@ -47,8 +54,18 @@ export function activate(context: vscode.ExtensionContext) {
 
 					outputChannel.clear();
 					outputChannel.show();   // responisble for showing outputchannel.
-					await explainSelection(selectedText, outputChannel);
 
+					let model = getSelectedModel(context);
+
+					if (!model) {
+						model = await selectOllamaModel(context);
+						if (!model) {
+							statusBarItem.text = '$(check) LocalFOrge: Ready';
+							return;
+						}
+					}
+
+					await explainSelection(selectedText, outputChannel, model);
 					statusBarItem.text = '$(check) LocalForge: Ready';
 
 

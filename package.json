@@ -1,7 +1,7 @@
 {
   "name": "localforge",
   "displayName": "LocalForge",
-  "description": "Local-first AI coding assistant powered by local LLMs.",
+  "description": "Lightweight bridge between VS Code and user-owned offline Ollama models.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.107.0"
@@ -16,6 +16,10 @@
       {
         "command": "localforge.explainSelection",
         "title": "LocalForge: Explain Selection"
+      },
+      {
+        "command": "localforge.selectModel",
+        "title": "LocalForge: Select Ollama Model"
       }
     ],
     "menus": {

@@ -1,20 +1,12 @@
 import { generateWithOllama } from "../ollama/ollamaClient";
-import { fallbackExplain } from "./fallbackExplain";
-import { getDefaultModel } from "../ollama/ollamaModels";
 
 
 export async function explainSelection(
     input: string,
     outputChannel: any,
+    model: string,
     abortSignal?: AbortSignal
 ): Promise<void>{
-
-    const model = await getDefaultModel();
-
-    if (!model) {
-        outputChannel.appendLine(fallbackExplain(input));
-        return;
-    }
 
     await generateWithOllama(
         model,

@@ -53,7 +53,8 @@ export async function generateWithOllama(
 						handlers.onDone();
 						return;
 					}
-				} catch {
+				} catch (error) {
+					handlers.onError(error instanceof Error ? error : new Error('Failed to parse Ollama stream response'));
 				}
 			}
 		}
