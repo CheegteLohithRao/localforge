@@ -1,3 +1,17 @@
+/**
+ * DISABLED (V1)
+ *
+ * This file is intentionally not used in LocalForge V1.
+ * It was an early offline fallback experiment.
+ *
+ * Kept only for reference.
+ * Do NOT import or call from production code.
+ * Used for offline testing and connection between files.
+ * Purely Experimental and left for future offline MetaData based explanation.
+ */
+
+
+
 export function fallbackExplain(input: string): string {
     const originalText = input;
     const trimmedText = input.trim();

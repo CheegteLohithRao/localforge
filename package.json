@@ -1,13 +1,19 @@
 {
   "name": "localforge",
   "displayName": "LocalForge",
-  "description": "Lightweight bridge between VS Code and user-owned offline Ollama models.",
-  "version": "0.0.1",
+"description": "A lightweight VS Code extension that connects user-owned, open-source Ollama models running locally.",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.107.0"
   },
   "categories": [
-    "Other"
+    "Programming Languages"
+  ],
+  "keywords": [
+    "ollama",
+    "vscode",
+    "local llm",
+    "offline ai"
   ],
   "activationEvents": [],
   "main": "./out/extension.js",
@@ -20,13 +26,17 @@
       {
         "command": "localforge.selectModel",
         "title": "LocalForge: Select Ollama Model"
+      },
+      {
+        "command": "localforge.askWithSelection",
+        "title": "LocalForge: Run Prompt on Selection"
       }
     ],
     "menus": {
       "editor/context": [
         {
           "command": "localforge.explainSelection",
-          "when": "editor.hasSelection",
+          "when": "editorHasSelection",
           "group": "navigation"
         }
       ]
@@ -34,8 +44,8 @@
     "keybindings": [
       {
         "command": "localforge.explainSelection",
-        "key": "Ctrl+alt+e",
-        "when": "editor.hasSelection"
+        "key": "alt+M",
+        "when": "editorHasSelection"
       }
     ]
   },

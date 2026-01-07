@@ -1,19 +1,14 @@
 import { generateWithOllama } from "../ollama/ollamaClient";
 
-
-export async function explainSelection(
-    input: string,
+export async function askWithSelection(
+    instruction: string,
+    selectedCode: string,
     outputChannel: any,
     model: string,
     abortSignal?: AbortSignal
-): Promise<void>{
+): Promise<void> {
 
-    const prompt = `Explain the following code clearly and concisely Focus on what the code 
-    does , not conversational responses.
-    
-    code:
-    ${input}
-    `;
+    const prompt = `${instruction} ${selectedCode}`;
 
     await generateWithOllama(
         model,
@@ -22,7 +17,7 @@ export async function explainSelection(
             onToken: (token: string) => {
                 outputChannel.append(token);
             },
-            onDone:() => {
+            onDone: () => {
                 outputChannel.appendLine('\n\n- LocalForge');
             },
             onError: (error: Error) => {
@@ -32,5 +27,4 @@ export async function explainSelection(
         },
         abortSignal
     );
-
 }

@@ -8,7 +8,7 @@ export async function getInstalledModels(): Promise<OllamaModel[]> {
 	const response = await fetch(`${OLLAMA_BASE_URL}/api/tags`);
 
 	if (!response.ok) {
-		throw new Error('Failed to fetch Ollama models, makesure Ollama is running');
+		throw new Error('Failed to fetch Ollama models, make sure Ollama is running');
 	}
 
 	const data = await response.json() as {models?: Array<{name: string}> };
