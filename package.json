@@ -1,19 +1,23 @@
 {
   "name": "localforge",
   "displayName": "LocalForge",
+  "publisher": "LohithRao",
 "description": "A lightweight VS Code extension that connects user-owned, open-source Ollama models running locally.",
   "version": "0.1.0",
+  "license": "MIT",
+  "icon": "Devlogo.png",
   "engines": {
     "vscode": "^1.107.0"
   },
   "categories": [
-    "Programming Languages"
+    "Programming Languages",
+    "Other"
   ],
   "keywords": [
     "ollama",
-    "vscode",
     "local llm",
-    "offline ai"
+    "local ai",
+    "privacy"
   ],
   "activationEvents": [],
   "main": "./out/extension.js",
