@@ -1,35 +1,37 @@
 import * as vscode from 'vscode';
 import { getInstalledModels } from '../ollama/ollamaModels';
-
-const MODEL_KEY = 'localforge.selecModel';
+import { setSelectedModel } from '../state/modelState';
 
 export async function selectOllamaModel(
-    context: vscode.ExtensionContext
-): Promise< string | undefined > {
+	context: vscode.ExtensionContext
+): Promise<void> {
 	try {
 		const models = await getInstalledModels();
 
 		if (models.length === 0) {
-			vscode.window.showErrorMessage('No Ollama models found, make sure Ollama is running in background.');
+			vscode.window.showErrorMessage(
+				'No Ollama models found. Make sure Ollama is running.'
+			);
+			return;
 		}
 
 		const picked = await vscode.window.showQuickPick(
-			models.map(m => ({label: m.name})),
-			{placeHolder: 'Select an Ollama model'}
+			models.map(m => ({ label: m.name })),
+			{ placeHolder: 'Select an Ollama model' }
 		);
 
 		if (!picked) return;
 
-		await context.globalState.update(MODEL_KEY, picked.label);
-		return picked.label;
-	} catch (error) {
-		vscode.window.showErrorMessage(`Failed to get Ollama models: ${error instanceof Error ? error.message : error}`);
-		return undefined;
-	}
-}
+		await setSelectedModel(context, picked.label);
 
-export function getSelectedModel(
-    context: vscode.ExtensionContext
-): string | undefined {
-    return context.globalState.get<string>(MODEL_KEY);
+		vscode.window.showInformationMessage(
+			`LocalForge model set to: ${picked.label}`
+		);
+	} catch (error) {
+		vscode.window.showErrorMessage(
+			`Failed to get Ollama models: ${
+				error instanceof Error ? error.message : String(error)
+			}`
+		);
+	}
 }

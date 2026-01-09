@@ -29,27 +29,28 @@ It is built for developers who want AI-powered coding assistance **without sendi
 ## Requirements
 
 - Visual Studio Code `^1.107.0` or newer
-- A locally running LLM backend (planned / configurable)
-  - Example: Ollama or similar local inference tools with locally downloaded AI models like Gemma:2B, DeepSeekCoder:7B, etc.
-
+- A locally running LLM backend 
+  - Currently supported: Ollama
+  - With locally downloaded models (e.g. Gemma 2B, DeepSeekCoder 7B, etc.)
 
 ---
 
 ## Extension Settings
 
-This extension will contribute configuration options such as :
+LocalForge provides the following capabilities via commands and minimal configuration:
 
-- Ollama model selection.
-- Custom prompt on selected code block.
-- Quick explain of selected code block.
+- Ollama model selection
+- Custom prompt on selected code
+- Quick explanation of selected code
 
-(Settings will appear under `LocalForge` in VS Code.)
+(Settings and commands appear under `LocalForge` in VS Code.)
+
 
 ---
 
 ## Project Status
 
-LocalForge is currently in **early development (v0.1.0)**.
+LocalForge is currently in **early development (v0.1.x)**.
 
 - APIs and features may change
 - Expect rapid iteration
@@ -111,7 +112,7 @@ Please report issues or suggestions via GitHub.
 ### 0.0.5 -> 0.0.9
 - Removed default choosing of first available model from Ollama
 - Added Model Selection option to choose models from the downloaded models
-- Fixed some bugs which caused to show No select text
+- Fixed issues causing false "No selected text" errors
 - Added Custom prompt option to give user input prompt to the model
 - Improved Custom prompt handling and integrated it well
 - Solved KeyBind issue
@@ -121,6 +122,26 @@ Please report issues or suggestions via GitHub.
 ### 0.1.0 
 - Works as a stable bridge between the Ollama and VS Code
 - First usable public version
+
+### 0.1.1
+- Improved Ollama streaming stability
+- Better error handling when Ollama is not running
+- Cleaner UX for long-running operations
+- Display currently selected Ollama model
+
+---
+
+## Quick Start
+
+1. Install LocalForge in VS Code
+2. Make sure Ollama is running locally
+3. Select a model using `LocalForge: Select Model`
+4. Select code in the editor
+5. Use:
+   - `LocalForge: Explain Selection`
+   - or `LocalForge: Run Prompt on Selection`
+
+All processing happens locally.
 
 ---
 

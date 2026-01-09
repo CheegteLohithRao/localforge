@@ -12,22 +12,28 @@ export async function generateWithOllama(
 	handlers: OllamaStreamHandlers,
 	abortSignal?: AbortSignal
 ): Promise<void> {
+	let buffer = '';
+	let doneCalled = false;
+
+	const safeDone = () => {
+		if (!doneCalled) {
+			doneCalled = true;
+			handlers.onDone();
+		}
+	};
+
 	try {
 		const response = await fetch(`${OLLAMA_BASE_URL}/api/generate`, {
 			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				model,
-				prompt,
-				stream: true
-			}),
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ model, prompt, stream: true }),
 			signal: abortSignal
 		});
 
 		if (!response.ok || !response.body) {
-			throw new Error(`Ollama HTTP error: ${response.status}`);
+			throw new Error(
+				`Failed to connect to Ollama (HTTP ${response.status}). Is Ollama running?`
+			);
 		}
 
 		const reader = response.body.getReader();
@@ -35,36 +41,43 @@ export async function generateWithOllama(
 
 		while (true) {
 			const { value, done } = await reader.read();
-
 			if (done) break;
 
-			const chunk = decoder.decode(value, { stream: true });
-			const lines = chunk.split('\n').filter(Boolean);
+			buffer += decoder.decode(value, { stream: true });
 
-			for (const line of lines) {
+			let newlineIndex;
+			while ((newlineIndex = buffer.indexOf('\n')) !== -1) {
+				const line = buffer.slice(0, newlineIndex).trim();
+				buffer = buffer.slice(newlineIndex + 1);
+
+				if (!line) continue;
+
+				let data;
 				try {
-					const data = JSON.parse(line);
+					data = JSON.parse(line);
+				} catch {
+					continue;
+				}
 
-					if (data.response) {
-						handlers.onToken(data.response);
-					}
+				if (typeof data.response === 'string') {
+					handlers.onToken(data.response);
+				}
 
-					if (data.done) {
-						handlers.onDone();
-						return;
-					}
-				} catch (error) {
-					handlers.onError(error instanceof Error ? error : new Error('Failed to parse Ollama stream response'));
+				if (data.done === true) {
+					safeDone();
+					return;
 				}
 			}
 		}
 
-		handlers.onDone();
+		safeDone();
 	} catch (error: any) {
-		if (error.name === 'AbortError') {
-			return;
-		}
+		if (error?.name === 'AbortError') return;
 
-		handlers.onError(error instanceof Error ? error : new Error(String(error)));
+		handlers.onError(
+			error instanceof Error
+				? error
+				: new Error('Unknown Ollama streaming error')
+		);
 	}
 }
