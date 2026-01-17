@@ -50,13 +50,12 @@ LocalForge provides the following capabilities via commands and minimal configur
 
 ## Project Status
 
-LocalForge is currently in **early development (v0.1.x)**.
+LocalForge is currently in a **stable, paused state**.
 
-- APIs and features may change
-- Expect rapid iteration
-- Stability and clarity are prioritized over feature count
+This release represents a complete and usable foundation for integrating local language models into VS Code. Active feature expansion is paused while focus shifts to other core projects.
 
-Your feedback during this stage is highly valuable.
+Bug fixes and minor maintenance updates may be provided if necessary.
+
 
 ---
 
