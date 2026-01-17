@@ -59,6 +59,27 @@ Bug fixes and minor maintenance updates may be provided if necessary.
 
 ---
 
+## Marketplace Distribution Status
+
+LocalForge is currently distributed via `.vsix` packages and GitHub releases.
+
+Publishing to the VS Code Marketplace is temporarily pending due to account-level and payment infrastructure limitations. This does not affect the functionality, scope, or completeness of the project.
+
+Users can install the extension manually using the provided `.vsix` package.
+
+---
+
+### Manual Installation
+
+1. Download the latest `.vsix` file from the GitHub Releases page.
+2. Install it in VS Code using:
+
+```bash
+code --install-extension localforge-0.1.1.vsix
+```
+
+---
+
 ## Design Philosophy
 
 LocalForge is built around a few core principles:
@@ -72,7 +93,7 @@ The goal is to **augment focused developers**, not automate away understanding.
 
 ---
 
-## Roadmap (Indicative)
+## Roadmap (Indicative, Subject to Change)
 
 - Model configuration UI
 - Integration with future LocalForge tools
