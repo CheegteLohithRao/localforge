@@ -144,6 +144,20 @@ All processing happens locally.
 
 ---
 
+## Keyboard Shortcuts
+
+LocalForge provides optional keyboard shortcuts for faster interaction.
+
+| Action | Command | Default Shortcut |
+|------|--------|------------------|
+| Explain selected code | `LocalForge: Explain Selection` | `Alt + M` |
+
+> Note:  
+> - Shortcuts can be changed in VS Code via **Preferences → Keyboard Shortcuts**  
+> - All LocalForge commands are also accessible through the Command Palette
+
+---
+
 ## Contributing
 
 Ideas, feedback, and constructive discussion are welcome.
